@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/apunixenv/!svn/ver/60/objc-preprocessor/tests
+END
+header_generator_test.rb
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/apunixenv/!svn/ver/60/objc-preprocessor/tests/header_generator_test.rb
+END
+testfile-bare.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/apunixenv/!svn/ver/56/objc-preprocessor/tests/testfile-bare.m
+END
+processors_test.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/apunixenv/!svn/ver/60/objc-preprocessor/tests/processors_test.rb
+END
+testfile.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/apunixenv/!svn/ver/52/objc-preprocessor/tests/testfile.h
+END
+testfile.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/apunixenv/!svn/ver/52/objc-preprocessor/tests/testfile.m
+END
+testfile-bare.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/apunixenv/!svn/ver/53/objc-preprocessor/tests/testfile-bare.h
+END
+testfile-no-annotation.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/apunixenv/!svn/ver/56/objc-preprocessor/tests/testfile-no-annotation.m
+END

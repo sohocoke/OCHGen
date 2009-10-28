@@ -1,0 +1,11 @@
+
+@interface ActionAttachedButton :NSObject
+{
+}
+
+-(void) setValue:(NSString*)value;
+-(NSString*) value;
+-(void) addTarget:(id)target action:(SEL)selector;
+
+
+@end
