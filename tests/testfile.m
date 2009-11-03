@@ -26,7 +26,7 @@ state:
 //@implementation AnotherCommentedClass
 
 // TODO find out why this wasn't used
-@implementation KVObserver
+@implementation KVObserver //@ :SomeSuperclass
 
 @synthesize calcController; //@ (assign,atomic) CalcController*
 @synthesize numberOfLows; //@ (readonly) NSUInteger

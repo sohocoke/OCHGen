@@ -2,7 +2,7 @@
 
 #import <foundation/foundation.h>
 
-@interface KVObserver :NSObject
+@interface KVObserver :SomeSuperclass
 {
 	NSDictionary* keyPathRegistrationDictionary;
 	
