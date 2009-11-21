@@ -59,7 +59,8 @@ if __FILE__ == $0
       
       # write if needed  TODO provide a switch
       output_file = f.sub(/\.m$/, '.h')
-      if (! generated.nil?) && ! (generated.eql? File.open(output_file).read)
+      if (! generated.nil?) && 
+	( ! File.exists?(output_file) || ! (generated.eql? File.open(output_file).read) )
         File.open(output_file, 'w') { |file| file.write(generated) }
         puts "Wrote generated header to #{output_file}."
       end
