@@ -43,5 +43,22 @@ context:(void *)context;"
     assert_equal "@property(readonly) NSTimeInterval elapsed;\n", 
       PropertiesProcessor.parse(str, :method).generate(:propertyDeclarationBlock)
   end
+  
+  def testImportBlock
+    annotation = '
+    /*@
+     #import \'dependency\'
+     @class DependencyClass
+    */
+    '
+    generated = ""
+    ImportsProcessor.parse(annotation).each {|processor|
+      generated << processor.generate
+    }
+
+    assert_equal '#import \'dependency\'
+@class DependencyClass', 
+      generated.strip
+  end
 end
 

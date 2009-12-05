@@ -59,7 +59,7 @@ end
 class ImportsProcessor
   def self.parse(str)
     tokens = Array.new
-    str.scan(/#import.*/).each do |proto|
+    str.scan(/(?:#import|@class).*/).each do |proto|
       tokens << self.new(proto)
     end
     return tokens
