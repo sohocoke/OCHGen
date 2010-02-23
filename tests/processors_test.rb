@@ -10,7 +10,7 @@ class ProcessorsTest < Test::Unit::TestCase
                      ofObject:(id)object
 change:(NSDictionary *)change
 context:(void *)context;"
-
+    
     assert_equal expected, generated.strip
   end
   
@@ -35,13 +35,13 @@ context:(void *)context;"
 */
     '
     assert_equal '#import <UIKit/UIKit.h>',
-      HeaderDeclarationProcessor.new(str).generate(:imports).strip
+    HeaderDeclarationProcessor.new(str).generate(:imports).strip
   end
   
   def testPropertyBlock_annotationOnMethods
     str = '-(NSTimeInterval) elapsed { //@ property(readonly)'
     assert_equal "@property(readonly) NSTimeInterval elapsed;\n", 
-      PropertiesProcessor.parse(str, :method).generate(:propertyDeclarationBlock)
+    PropertiesProcessor.parse(str, :method).generate(:propertyDeclarationBlock)
   end
   
   def testImportBlock
@@ -55,10 +55,9 @@ context:(void *)context;"
     ImportsProcessor.parse(annotation).each {|processor|
       generated << processor.generate
     }
-
+    
     assert_equal '#import \'dependency\'
 @class DependencyClass', 
-      generated.strip
+    generated.strip
   end
 end
-
