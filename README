@@ -1,0 +1,10 @@
+* What?
+
+OCHGen is a tool that uses information available from an Objective-C implementation file to do useful things. Currently the useful thing that is performed is the generation of the corresponding header file, although more features are planned in the future. In order to generate the header file, OCHGen uses both information that any .m file would necessarily have, as well as annotations written by the author of the .m file which are comments in a special form.
+
+
+* More info
+
+More information is available on the project's wiki page:
+
+http://wiki.github.com/sohocoke/OCHGen
