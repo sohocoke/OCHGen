@@ -4,7 +4,7 @@ require "header_generator.rb"
 class HeaderGenerationTest < Test::Unit::TestCase
  
   def testParseTestFiles
-    ["tests/testfile", "tests/testfile-bare"].each do |path_prefix|
+    ["tests/testfile", "tests/testfile-bare", "tests/testfile-with-category"].each do |path_prefix|
       implContent = File.new(path_prefix + ".m").read
       expectedHeader = File.new(path_prefix + ".h").read
       
