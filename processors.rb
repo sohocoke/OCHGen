@@ -2,9 +2,27 @@
 
 SingleLineAnnotationSymbol = /\/\/@/
 
+class ImplBlockProcessor
+  def initialize(str)
+    @str = str
+  end
+  
+  def self.parse(str)
+    blocks = Array.new
+    str.scan(/@implementation\s+.*?@end/m).each do |block|
+      blocks << self.new(block)
+    end
+    return blocks
+  end
+  
+  def generate
+    return @str + "\n"
+  end
+end
+
 class MethodPrototypesProcessor
   def initialize(str)
-    @tokens = str.scan(/[+-]\s*\(.*?\)\s*.*?(?=\{)/m)
+    @tokens = str.scan(/^[+-]\s*\(.*?\)\s*.*?(?=\{)/m)
   end
   
   def generate
@@ -17,13 +35,18 @@ class MethodPrototypesProcessor
 end
 
 class ClassStartProcessor
-  Pattern = /@implementation\s+([\w]+)\s*(?:#{SingleLineAnnotationSymbol}(.*))?/
-
+  Pattern = /@implementation\s+([\w]+)(.*)?/
+  AnnotationPattern = /(?:\s*\/\/@(.*))/
+  CategoryPattern = /\s*\(.*?\)/  
+  
   def initialize(str)
     super()
     parsed = str.scan(Pattern).first
     @className = parsed[0]
-    @postClassName = parsed[1]
+    if parsed[1] != nil
+      @postClassName = parsed[1].scan(AnnotationPattern).flatten[0]
+      @postClassName ||= parsed[1].scan(CategoryPattern)[0]
+    end
     @postClassName ||= ' :NSObject'
   end
   

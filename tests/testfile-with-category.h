@@ -22,7 +22,9 @@ context:(void *)context;
 
 @end
 
-
 @interface UIView (MyCategory)
--(void)doCategoryOperation;
+
+-(void) doCategoryOperation;
+
+
 @end

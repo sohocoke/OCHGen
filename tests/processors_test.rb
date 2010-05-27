@@ -24,6 +24,11 @@ context:(void *)context;"
     assert_equal "@interface MyClass :MySuperClass\n", token.generate
   end
   
+  def testClassStartBlock_category
+    token = ClassStartProcessor.new("@implementation MyClass (Category)")
+    assert_equal "@interface MyClass (Category)\n", token.generate
+  end
+  
   def testClassEndBlock
     token = ClassEndProcessor.new
     assert_equal "@end", token.generate
@@ -59,5 +64,19 @@ context:(void *)context;"
     assert_equal '#import \'dependency\'
 @class DependencyClass', 
     generated.strip
+  end
+  
+  def testClassBlock
+    string = "
+@implementation xxx
+@end
+@implementation xxx (category)
+@end
+"
+    
+    parsedBlocks = ImplBlockProcessor.parse(string)
+    assert_equal parsedBlocks.class, Array
+    assert_equal parsedBlocks.length, 2
+    assert_equal parsedBlocks[0].generate, "@implementation xxx\n@end\n"
   end
 end
