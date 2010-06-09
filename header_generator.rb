@@ -44,13 +44,11 @@ class HeaderGenerator
       # class block begin
       generated << ClassStartProcessor.new(implBlock).generate
       # ivar block
-      if (i == 0)
-        generated.appendIndented!(
-            headerDeclaration.generate(:ivars) << "\n" << 
-              propertiesFromSynthesize.generate(:ivarBlock),
-            "{", "}"
-            )
-      end  
+      generatedIvarBlock = headerDeclaration.generate(:ivars) << "\n" << 
+        propertiesFromSynthesize.generate(:ivarBlock)
+      if ! generatedIvarBlock.strip.empty?
+        generated.appendIndented!(generatedIvarBlock, "{", "}")
+      end
       generated << "\n"
       # method prototypes
       generated << MethodPrototypesProcessor.new(implBlock).generate
