@@ -39,11 +39,15 @@ class ClassStartProcessor
   AnnotationPattern = /(?:\s*\/\/@(.*))/
   CategoryPattern = /\s*\(.*?\)/  
   
+  attr_reader :isClassDefinition
+  
   def initialize(str)
     super()
     parsed = str.scan(Pattern).first
     @className = parsed[0]
     if parsed[1] != nil
+      @isClassDefinition = parsed[1].scan(CategoryPattern).flatten.empty?
+      
       @postClassName = parsed[1].scan(AnnotationPattern).flatten[0]
       @postClassName ||= parsed[1].scan(CategoryPattern)[0]
     end

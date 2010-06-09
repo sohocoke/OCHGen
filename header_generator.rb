@@ -42,11 +42,12 @@ class HeaderGenerator
       propertiesFromSynthesize = PropertiesProcessor.parse(implBlock, :synthesize)
   
       # class block begin
-      generated << ClassStartProcessor.new(implBlock).generate
+      classStartGenerator = ClassStartProcessor.new(implBlock)
+      generated << classStartGenerator.generate
       # ivar block
-      generatedIvarBlock = headerDeclaration.generate(:ivars) << "\n" << 
-        propertiesFromSynthesize.generate(:ivarBlock)
-      if ! generatedIvarBlock.strip.empty?
+      if classStartGenerator.isClassDefinition
+        generatedIvarBlock = headerDeclaration.generate(:ivars) << "\n" << 
+          propertiesFromSynthesize.generate(:ivarBlock)
         generated.appendIndented!(generatedIvarBlock, "{", "}")
       end
       generated << "\n"
