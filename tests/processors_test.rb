@@ -2,6 +2,7 @@ require "test/unit"
 require "processors.rb"
 
 class ProcessorsTest < Test::Unit::TestCase
+  
   def testMethodPrototypeBlock
     generated = MethodPrototypesProcessor.new(File.new("tests/testfile.m").read).generate
     
@@ -40,13 +41,32 @@ context:(void *)context;"
 */
     '
     assert_equal '#import <UIKit/UIKit.h>',
-    HeaderDeclarationProcessor.new(str).generate(:imports).strip
+      HeaderDeclarationProcessor.new(str).generate(:imports).strip
+  end
+  
+  def testPropertyBlock_annotationOnSynthesize
+    str = '@synthesize prop1; //@ (readonly) NSString*'
+    assert_equal "@property(readonly) NSString* prop1;\n",
+      PropertiesProcessor.parse(str).generate(:propertyDeclarationBlock)
+    
+    assert_equal "// ivars for properties:\nNSString* prop1;\n",
+      PropertiesProcessor.parse(str).generate(:ivarBlock)
+  end
+  
+  def testPropertyBlock_annotationOnDynamic
+    str = '@dynamic prop1; //@ (readonly) NSString*'
+    assert_equal "@property(readonly) NSString* prop1;\n",
+      PropertiesProcessor.parse(str).generate(:propertyDeclarationBlock) 
+
+    assert_equal "",
+      PropertiesProcessor.parse(str).generate(:ivarBlock)
   end
   
   def testPropertyBlock_annotationOnMethods
     str = '-(NSTimeInterval) elapsed { //@ property(readonly)'
     assert_equal "@property(readonly) NSTimeInterval elapsed;\n", 
-    PropertiesProcessor.parse(str, :method).generate(:propertyDeclarationBlock)
+      MethodPropertiesProcessor.parse(str).generate(:propertyDeclarationBlock)
+    # TODO check ivar decl block
   end
   
   def testImportBlock

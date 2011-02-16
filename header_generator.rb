@@ -39,7 +39,7 @@ class HeaderGenerator
       generated << "\n" if (i > 0) 
         
       implBlock = implBlocks[i]
-      propertiesFromSynthesize = PropertiesProcessor.parse(implBlock, :synthesize)
+      propertiesFromSynthesize = PropertiesProcessor.parse(implBlock)
   
       # class block begin
       classStartGenerator = ClassStartProcessor.new(implBlock)
@@ -56,7 +56,7 @@ class HeaderGenerator
       generated << "\n"
       #properties
       generated << propertiesFromSynthesize.generate(:propertyDeclarationBlock)
-      generated << PropertiesProcessor.parse(implBlock, :method).generate(:propertyDeclarationBlock)
+      generated << MethodPropertiesProcessor.parse(implBlock).generate(:propertyDeclarationBlock)
       #class block end
       generated << "\n" << ClassEndProcessor.new.generate << "\n"
     }

@@ -123,34 +123,31 @@ class IvarsProcessor
 end
 
 class PropertiesProcessor
-  def self.parse(str, tokenType)
-    case tokenType
-      when :synthesize
-        return self.new(
-          str.scan(/@synthesize\s*(.*?)(?:\s*#{SingleLineAnnotationSymbol})\s*(\(.*?\))\s*(.*)/)
-          )
-      when :method
-        parsed = str.scan(/-\s*\((.*?)\)\s*(\w+)\s*\{?\s#{SingleLineAnnotationSymbol}\s*property(\(\w+\))/)
-        reorderedLines = []
-        parsed.each do |line|
-          type, name, attrs = line[0..2]
-          reorderedLines << [name + ";", attrs, type]
-        end
-        return self.new(reorderedLines)
-    end
+  def self.parse(str)
+    scanned = str.scan( /@(synthesize|dynamic)\s*(.*?)(?:\s*#{SingleLineAnnotationSymbol})\s*(\(.*?\))\s*(.*)/ )
+    # TODO create hash of scanned tokens by type (synthesize|dynamic)
+    tokens = scanned.collect{ |e| e[1..-1] }
+    tokens_excluded = scanned.select{ |e| e[0].eql? 'dynamic' }.collect{ |e| e[1..-1] }
+    return self.new(tokens, tokens_excluded)
   end
 
-  def initialize(tokens)
+  def initialize(tokens, tokens_excluded)
     @tokens = tokens
+    @tokens_excluded = tokens_excluded
+  end
+  
+  def get_ivar_tokens
+    return @tokens - @tokens_excluded
   end
 
   def generate(generationType)
     generated = ""
     case generationType
       when :ivarBlock
-        return generated if @tokens.empty?
+        tokens = self.get_ivar_tokens
+        return generated if tokens.empty?
         generated << "// ivars for properties:\n"
-        @tokens.each do |synthesizeLine|
+        tokens.each do |synthesizeLine|
           generated << synthesizeLine[2] << " " << synthesizeLine[0] << "\n"
         end
       when :propertyDeclarationBlock
@@ -160,5 +157,17 @@ class PropertiesProcessor
         end
     end
     return generated
+  end
+end
+
+class MethodPropertiesProcessor < PropertiesProcessor
+  def self.parse(str)
+    parsed = str.scan(/-\s*\((.*?)\)\s*(\w+)\s*\{?\s#{SingleLineAnnotationSymbol}\s*property(\(\w+\))/)
+    reorderedLines = []
+    parsed.each do |line|
+      type, name, attrs = line[0..2]
+      reorderedLines << [name + ";", attrs, type]
+    end
+    return self.new(reorderedLines, nil)
   end
 end
