@@ -30,12 +30,12 @@ class HeaderGenerator
     headerDeclaration = HeaderDeclarationProcessor.new(impl)
     return nil if ! headerDeclaration.found
       
-      # imports
-      generated.appendParagraph!( headerDeclaration.generate(:imports) )
+    # imports
+    generated.appendParagraph!( headerDeclaration.generate(:imports) )
 
     # loop by implementation block (@implementation..@end)
     implBlocks = ImplBlockProcessor.parse(impl).map{|x| x.generate}
-    implBlocks.each_index {|i|
+    implBlocks.each_index { |i|
       generated << "\n" if (i > 0) 
         
       implBlock = implBlocks[i]
