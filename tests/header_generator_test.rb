@@ -12,12 +12,12 @@ class HeaderGenerationTest < Test::Unit::TestCase
     end
   end
   
-  def testNoImpactToNonAnnotated
+  def testNoImpactForNonAnnotated
     implContent = File.new('tests/testfile-no-annotation.m').read
     assert_nil HeaderGenerator.new.parse(implContent)
   end
   
-  def testNoImpactToNonAnnotated
+  def testNoImpactForMethodWithBlockComment
     implContent = File.new('tests/testfile-comment-in-method.m').read
     assert_not_nil HeaderGenerator.new.parse(implContent)
   end
