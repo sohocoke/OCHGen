@@ -86,6 +86,31 @@ context:(void *)context;"
     generated.strip
   end
   
+  def testImportBlock_v2
+    annotation = '
+    /*@
+    imports:
+     dependency.h
+     <framework.h>
+    */'
+    
+    asset_equal ImportSectionProcessor.parse(annotation).generate,
+        '#import "dependency.h"\n#import <framework.h>'
+  end
+
+  def testInlineBlock
+    annotation = '
+    /*@
+    inlines:
+     @protocol definition, whatever
+     @end
+    */'
+    
+    asset_equal InlineSectionProcessor.parse(annotation).generate,
+        '@protocol definition, whatever
+        @end'
+  end
+
   def testClassBlock
     string = "
 @implementation xxx
@@ -122,7 +147,4 @@ context:(void *)context;"
     assert_false annotation.hasSection?(:section_2)
   end
   
-  def testSectionProcessor_legacy 
-  
-  end
 end
