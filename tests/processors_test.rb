@@ -99,4 +99,30 @@ context:(void *)context;"
     assert_equal parsedBlocks.length, 2
     assert_equal parsedBlocks[0].generate, "@implementation xxx\n@end\n"
   end
+  
+  def testSectionProcessor
+    annotation = "
+        /*@
+        imports:
+        import-1
+        import-2
+        
+        inlines:
+        inline-1
+        inline-2
+        
+        some-other-section:
+        line-1
+        
+        line-2-after-emptyline
+        */"
+        
+    assert_true annotation.hasSection?(:imports)
+    assert_true annotation.hasSection?(:some-other-section)
+    assert_false annotation.hasSection?(:section_2)
+  end
+  
+  def testSectionProcessor_legacy 
+  
+  end
 end
