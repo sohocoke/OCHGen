@@ -1,18 +1,6 @@
 # interface that parses for tokens to process.
 
 SingleLineAnnotationSymbol = /\/\/@/
-SectionHeadingPattern = /^(\w)+:\s*$/
-
-class String
-  def hasSection?(sectionName)
-    return self.index(sectionName) != nil
-  end
-  
-  def section(sectionName)
-    partitioned = self.partition(sectionName)
-    return partitioned[partitioned.indexOf(sectionName) + 1]
-  end
-end
 
 class ImplBlockProcessor
   def initialize(str)
@@ -84,16 +72,7 @@ class HeaderDeclarationProcessor
   def initialize(str)
     parsed = str.scan(/\/\*@*(.*)\*\//m).first
     @found = ! parsed.nil?
-    # if neither inline nor import sections exist, the annotation is v0.2 lax; 
-    # - otherwise it's v0.2 strict
-    if (! parsed.hasSection?(:inline) && ! parsed.hasSection?(:import))
-      @imports = ""
-      @inlines = ImportsProcessor.parse(parsed.to_s)
-    else
-      @imports = ImportSectionProcessor.parse(parsed.to_s)
-      @inlines = InlineSectionProcessor.parse(parsed.to_s)
-    end
-
+    @imports = ImportsProcessor.parse(parsed.to_s)
     @ivars = IvarsProcessor.parse(parsed.to_s)
   end
   
@@ -102,23 +81,6 @@ class HeaderDeclarationProcessor
     instance_variable_get("@" << token_symbol.to_s).each {|token| generated << token.generate}
     return generated
   end
-end
-
-class SectionProcessor
-  attr_accessor :name
-  
-  def self.parse(str)
-    tokens = Array.new
-    # scan each line in section, add to tokens
-  end
-end
-
-class ImportSectionProcessor < SectionProcessor
-  def generate
-  end
-end
-
-class InlineSectionProcesor < SectionProcessor
 end
 
 class ImportsProcessor
